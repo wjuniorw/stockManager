@@ -8,13 +8,30 @@
 	position: relative;
 }
 .new-prod {
-	position: fixed;
-	top: 70px;
-	left: 16px;
-	right: 15px;
-	z-index: 1;
+	/*position: fixed;*/
+	/*top: 70px;*/
+	/*left: 16px;*/
+	/*right: 15px;*/
+	/*z-index: 1;*/
 }
 
-.card.contentProd {
-	top: 140px;
+/*.card.contentProd {
+	top: -630px;
+}*/
+@media (min-width: 1200px) {
+  .card.contentProd {
+    top: -610px !important;
+  }
+}
+@media (min-width: 768px) {
+  .card.contentProd {
+    top: 10px;
+  }
+
+}
+.edit-prod .card {
+	float: none;
+}
+.delet-prod .card {
+	float: none;
 }

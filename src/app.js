@@ -14,7 +14,10 @@ class App extends Component {
   }
   componentDidMount() {
     let prods = this.localProd('prod')
-    this.props.dispatch({type: types.FETCH_PRODUCTS, products: prods})
+    let alternative = ['nenhum produto salvo localmente']
+    !prods
+    ? this.props.dispatch({type: types.FETCH_PRODUCTS, products: alternative})
+    : this.props.dispatch({type: types.FETCH_PRODUCTS, products: prods})
   }
   render() {
     return (
@@ -23,7 +26,7 @@ class App extends Component {
 
         <div className="container-fluid">
         <div className="new-prod">
-        <div className="card col-md-offset-6">
+        <div className="card col-md-3">
           <div className="body">
             <input className="form-control" type="text" ref="name" placeholder="nome producto" />
             <br />
@@ -32,15 +35,61 @@ class App extends Component {
           </div>
         </div>
         </div>
+        <div className="edit-prod">
+        <div className="card col-md-3">
+          <div className="body">
+            <select className="form-control" ref="toUpdate">
+              <option>
+                Teste
+              </option>
+              {
+                _.map(this.props.products.products, (item, i) => {
+                  return (<option key={i} value={item}>
+                    {item}
+                  </option>)
+                })
+              }
+            </select>
+            <br />
+            <input className="form-control" type="text" ref="edit" placeholder="nome producto" />
+            <br />
+            <a className="btn btn-success" onClick={this.updateProduct}>Editar Produto</a>
+            <br />
+          </div>
+        </div>
+        </div>
+        <div className="delet-prod">
+        <div className="card col-md-3">
+          <div className="header">
+            Selecione o Produto
+          </div>
+          <div className="body">
+            <select className="form-control" ref="toDel">
+              {
+                _.map(this.props.products.products, (item, i) => {
+                  return (<option key={i} value={item}>
+                    {item}
+                  </option>)
+                })
+              }
+            </select>
+            <br />
+            <input className="form-control" type="text"  placeholder="nome producto" />
+            <br />
+            <a className="btn btn-danger" onClick={this.deletProduct}>Excluir Produto</a>
+            <br />
+          </div>
+        </div>
+        </div>
 
-        <div className="card contentProd">
+        <div className="card contentProd col-md-8 col-md-offset-4">
         <div className="info-container">
           {
             _.map(this.props.products.products, this.renderBox)
           }
         </div>
         </div>
-        <div className="card">
+        <div className="card" style={{display: 'none'}}>
           <h3 className="header">Lista de productos</h3>
           <h4>
             Teste...
@@ -77,6 +126,31 @@ class App extends Component {
     let current = prod.products
     this.props.dispatch({ type: types.NEW_PRODUCT, products: current })
     console.log(prod)
+  }
+  updateProduct(){
+    let prods = this.localProd('prod')
+    let prod = prods.indexOf(this.refs.toUpdate.value)
+    let upd8 = this.refs.edit.value
+    let nextProd;
+    (prod > -1)
+    ? nextProd = prods.splice(prod, 1, upd8)
+    : alert('Selecione um produto VALIDO!')
+    console.log(nextProd)
+    // save local...
+    this.upDateprod('prod', prods)
+    // atualiza reducer
+    this.props.dispatch({ type: types.NEW_PRODUCT, products: prods })
+  }
+  deletProduct() {
+    let prods = this.localProd('prod')
+    let prod = prods.indexOf(this.refs.toDel.value)
+    console.log('index - ', prod)
+    let nextProd = prods.splice(prod, 1)
+    // save local...
+    this.upDateprod('prod', prods)
+    // atualiza reducer...
+    this.props.dispatch({ type: types.NEW_PRODUCT, products: prods })
+    // this.props.dispatch({ type: types.NEW_PRODUCT, products: nextProd })
   }
   renderProd(item) {
     return (  <li key={item}>
@@ -122,7 +196,7 @@ class App extends Component {
 // injeta props de dados vindos do reducer
 function mapStateToprops(state) {
   return {
-    qwerty: ['qewrty', 'uiop', 'asdfg'],
+    // qwerty: ['qewrty', 'uiop', 'asdfg'],
     products: productsSelector.getProducts(state)
   }
 }
