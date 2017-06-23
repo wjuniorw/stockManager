@@ -20,7 +20,7 @@
 }*/
 @media (min-width: 1200px) {
   .card.contentProd {
-    top: -610px !important;
+    top: -630px !important;
   }
 }
 @media (min-width: 768px) {
@@ -28,6 +28,9 @@
     top: 10px;
   }
 
+}
+.new-prod .card {
+	float: none;
 }
 .edit-prod .card {
 	float: none;

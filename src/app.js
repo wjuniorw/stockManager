@@ -161,14 +161,14 @@ class App extends Component {
   renderBox(item, i) {
     return (
       <div className="col-lg-3 col-md-3 col-sm-6 col-xs-12" key={i}>
-        <div className="info-box-3 bg-indigo hover-expand-effect">
+        <div className="info-box bg-indigo hover-expand-effect">
           <div className="icon">
-            <i className="material-icons">{item}</i>
-              </div>
-              <div className="content">
-                <div className="text">NEW PRODUCT</div>
-                <div className="number count-to" data-from="0" data-to="{i}" data-speed="1000" data-fresh-interval="20">{i + 1}</div>
-              </div>
+            <i className="material-icons" onMouseEnter={this.reaction.bind(this, i)}>:-)</i>
+          </div>
+          <div className="content">
+            <div className="font-25">{item}</div>
+            <div className="number count-to" data-from="0" data-to="{i}" data-speed="1000" data-fresh-interval="20">{i + 1}</div>
+          </div>
         </div>
       </div>
     )
@@ -190,6 +190,15 @@ class App extends Component {
   localSet(str, obj) {
     // return this.prodToStr(localStorage.setItem(str, obj))
     return localStorage.setItem(str, this.prodToStr(obj))
+  }
+  reaction(it) {
+    let prods = document.querySelectorAll('.icon .material-icons')
+    let prod = prods[it];
+    // console.log(prod);
+    (prod.childNodes[0].data === ';-)')
+    ? prod.childNodes[0].data = ':-*'
+    : prod.childNodes[0].data = ';-)'
+
   }
 }
 
